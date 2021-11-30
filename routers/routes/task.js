@@ -17,6 +17,6 @@ taskRouter.get("/task/:id", getTaskById);
 // admin
 taskRouter.get("/tasks", authentication, authorization, getTask);
 taskRouter.get("/deltask", authentication, authorization, getDeletedTask);
-taskRouter.get("/delete/:id", deletedTask);
-taskRouter.put("/task/:id", updateTask);
+taskRouter.delete("/delete/:id", authentication, authorization, deletedTask);
+taskRouter.put("/task/:id", authentication, authorization, updateTask);
 module.exports = taskRouter;
