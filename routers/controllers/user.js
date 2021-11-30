@@ -41,7 +41,7 @@ const login = (req, res) => {
                 role:result.role
             }
             option={
-                expiresIn:"60m"
+                expiresIn:"6000000m"
             }
 
             const token = await jwt.sign(payload ,secret,option)

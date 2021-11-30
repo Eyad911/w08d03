@@ -4,7 +4,7 @@ const createTask = (req, res) => {
   const newTask = new taskModel({
     task,
     userId,
-    isDelete
+    
   });
   newTask
     .save()
@@ -30,7 +30,7 @@ const getDeletedTask = (req, res) => {
     taskModel
     .find({})
     .then((result) => {
-        console.log(result);
+        // console.log(result);
         result.filter(item=>{
             if(item.isDelete == true)
             res.status(200).json(item);
@@ -55,9 +55,45 @@ const getTaskById = (req, res) => {
       res.status(400).json(err);
     });
 };
+
+const deletedTask = (req, res) => {
+    const { id } = req.params;
+    
+    console.log(id);
+    taskModel
+    .findByIdAndUpdate(id,{ isDelete: true }).exec()
+    .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+const updateTask = (req, res) => {
+    const { id } = req.params;
+    const {task} = req.body
+    
+    console.log(id);
+    taskModel
+    .findByIdAndUpdate(id,{ task }).exec()
+    .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+
+
 module.exports = {
     createTask,
     getTask,
     getTaskById,
-    getDeletedTask
+    getDeletedTask,
+    deletedTask,
+    updateTask
 };
