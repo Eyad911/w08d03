@@ -1,9 +1,10 @@
 const taskModel = require('./../../db/models/task');
 const createTask = (req, res) => {
-  const { task,userId } = req.body;
+  const { task,userId,isDelete } = req.body;
   const newTask = new taskModel({
     task,
     userId,
+    isDelete
   });
   newTask
     .save()
@@ -19,6 +20,22 @@ const getTask = (req, res) => {
     .find({})
     .then((result) => {
       res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+const getDeletedTask = (req, res) => {
+    taskModel
+    .find({})
+    .then((result) => {
+        console.log(result);
+        result.filter(item=>{
+            if(item.isDelete == true)
+            res.status(200).json(item);
+        })
+    //   res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -41,5 +58,6 @@ const getTaskById = (req, res) => {
 module.exports = {
     createTask,
     getTask,
-    getTaskById
+    getTaskById,
+    getDeletedTask
 };
