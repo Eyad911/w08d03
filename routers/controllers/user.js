@@ -1,44 +1,10 @@
-# w08d02
-SignUp and Login With encrypt and gen Token
-# Schemas:
+const userModel = require("./../../db/models/user");
+const bcrypt = require("bcrypt");
+const jwt  = require("jsonwebtoken");
+const { options } = require("../routes/role");
+const SALT = Number(process.env.SALT);
+require('dotenv').config();
 
-## ROLE SCHEMA
-
-```
-const mongoose = require("mongoose");
-const role = new mongoose.Schema({
-  role: { type: String, required: true },
-  Permissions: { type: Array },
-});
-module.exports = mongoose.model("Role", role);
-
-
-```
-
-## USER SCHEMA
-
-```
-const mongoose = require("mongoose");
-
-const user = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
-});
-
-module.exports = mongoose.model("User", user);
-
-
-
-```
-
-
-
-# SignUp:
-
-## Controllers:
-
-```
 const Register = async (req, res) => {
   const { email, password, role } = req.body;
   const lowerEmail = email.toLowerCase();
@@ -57,19 +23,7 @@ const Register = async (req, res) => {
       res.status(400).json(err);
     });
 };
-```
-## Routes:
 
-```
-userRouter.post("/signUp", Register);
-```
-
-
-# SignIn:
-
-## Controllers:
-
-```
 const login = (req, res) => {
   const { email, password } = req.body;
 
@@ -109,10 +63,7 @@ const login = (req, res) => {
     });
 };
 
-```
-## Routes:
-
-```
-userRouter.post("/login", login);
-```
-
+module.exports = {
+  Register,
+  login,
+};
