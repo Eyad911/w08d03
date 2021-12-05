@@ -3,7 +3,7 @@ const createTask = (req, res) => {
   const { task,userId,isDelete } = req.body;
   const newTask = new taskModel({
     task,
-    userId,
+    userId: req.token.id ,
     
   });
   newTask

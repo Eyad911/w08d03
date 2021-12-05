@@ -25,29 +25,34 @@ const Register = async (req, res) => {
 };
 
 const login = (req, res) => {
-  const { email, password } = req.body;
+  const { userName, email, password } = req.body;
 
   userModel
-    .findOne({ email })
+    .findOne({ $or: [{ email }, { userName }] })
     .then(async (result) => {
       if (result) {
+        console.log(result);
+        if (result.email == email || result.userName == userName) {
+          const secret = process.env.SECRETKEY;
+          const hashedpass = await bcrypt.compare(password, result.password);
+          console.log(hashedpass);
+          console.log(secret);
+          const payload = {
+            role: result.role,
+            id: result._id,
+            username: result.username,
+            email: result.email,
+            
+          };
           console.log(result);
-        if (result.email == email) {
-            const secret = process.env.SECRETKEY
-            const hashedpass = await bcrypt.compare(password,result.password)
-            console.log(hashedpass);
-            console.log(secret);
-            const payload ={
-                role:result.role
-            }
-            option={
-                expiresIn:"6000000m"
-            }
+          option = {
+            expiresIn: "6000000m",
+          };
 
-            const token = await jwt.sign(payload ,secret,option)
-            console.log(token);
+          const token = await jwt.sign(payload, secret, option);
+          console.log("thistoken",token);
           if (hashedpass) {
-            res.status(200).json({result,token});
+            res.status(200).json({ result, token });
           } else {
             res.status(404).json("worng email or password");
           }

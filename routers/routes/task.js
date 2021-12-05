@@ -11,7 +11,7 @@ const taskRouter = express.Router();
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
 
-taskRouter.post("/task", createTask);
+taskRouter.post("/task",authentication, createTask);
 taskRouter.get("/task/:id", getTaskById);
 
 // admin
