@@ -17,7 +17,7 @@ const createTask = (req, res) => {
 };
 const getTask = (req, res) => {
     taskModel
-    .find({})
+    .find({isDelete: false})
     .then((result) => {
       res.status(200).json(result);
     })
@@ -61,7 +61,7 @@ const deletedTask = (req, res) => {
     
     console.log(id);
     taskModel
-    .findByIdAndUpdate(id,{ isDelete: true }).exec()
+    .findByIdAndUpdate(id,{ isDelete: true },{new: true}).exec()
     .then((result) => {
         console.log(result);
         res.status(200).json(result);
@@ -77,7 +77,7 @@ const updateTask = (req, res) => {
     
     console.log(id);
     taskModel
-    .findByIdAndUpdate(id,{ task }).exec()
+    .findByIdAndUpdate(id,{ task },{new: true}).exec()
     .then((result) => {
         console.log(result);
         res.status(200).json(result);

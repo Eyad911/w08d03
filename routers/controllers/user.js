@@ -25,14 +25,14 @@ const Register = async (req, res) => {
 };
 
 const login = (req, res) => {
-  const { userName, email, password } = req.body;
+  const {  email, password } = req.body;
 
   userModel
-    .findOne({ $or: [{ email }, { userName }] })
+    .findOne({ email } )
     .then(async (result) => {
       if (result) {
         console.log(result);
-        if (result.email == email || result.userName == userName) {
+        if (result.email == email) {
           const secret = process.env.SECRETKEY;
           const hashedpass = await bcrypt.compare(password, result.password);
           console.log(hashedpass);
@@ -44,13 +44,13 @@ const login = (req, res) => {
             email: result.email,
             
           };
-          console.log(result);
+          // console.log("afterpayload",result);
           option = {
             expiresIn: "6000000m",
           };
 
           const token = await jwt.sign(payload, secret, option);
-          console.log("thistoken",token);
+          // console.log("thistoken",token);
           if (hashedpass) {
             res.status(200).json({ result, token });
           } else {
