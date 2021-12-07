@@ -15,6 +15,41 @@ const createTask = (req, res) => {
       res.status(400).json(err);
     });
 };
+
+const getTasks = (req, res) => {
+    taskModel
+      .find({ userId: req.token.id, deleted: false })
+      .then((result) => {
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "There is no todos yet!!" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+
+
+  const getUserTasks = (req, res) => {
+    const { id } = req.params;
+  
+    taskModel
+      .find({ userId: id, deleted: false })
+      .then((result) => {
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "There is no todos yet!!" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+
+
 const getTask = (req, res) => {
     taskModel
     .find({isDelete: false})
@@ -61,9 +96,9 @@ const deletedTask = (req, res) => {
     
     console.log(id);
     taskModel
-    .findByIdAndUpdate(id,{ isDelete: true },{new: true}).exec()
+    .findByIdAndUpdate({ _id: id, userId: req.token.id, deleted: false },{ isDelete: true },{new: true}).exec()
     .then((result) => {
-        console.log(result);
+        // console.log(result);
         res.status(200).json(result);
     })
     .catch((err) => {
@@ -71,15 +106,19 @@ const deletedTask = (req, res) => {
     });
 };
 
+
+
 const updateTask = (req, res) => {
     const { id } = req.params;
     const {task} = req.body
     
     console.log(id);
     taskModel
-    .findByIdAndUpdate(id,{ task },{new: true}).exec()
+    .findByIdAndUpdate({ _id: id, userId: req.token.id, deleted: false },
+        { task },
+        { new: true }).exec()
     .then((result) => {
-        console.log(result);
+        // console.log(result);
         res.status(200).json(result);
     })
     .catch((err) => {
@@ -95,5 +134,7 @@ module.exports = {
     getTaskById,
     getDeletedTask,
     deletedTask,
-    updateTask
+    updateTask,
+    getTasks,
+    getUserTasks
 };

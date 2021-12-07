@@ -35,8 +35,8 @@ const login = (req, res) => {
         if (result.email == email) {
           const secret = process.env.SECRETKEY;
           const hashedpass = await bcrypt.compare(password, result.password);
-          console.log(hashedpass);
-          console.log(secret);
+          // console.log(hashedpass);
+          // console.log(secret);
           const payload = {
             role: result.role,
             id: result._id,

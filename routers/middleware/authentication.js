@@ -3,7 +3,7 @@ require("dotenv").config();
 const secret = process.env.SECRETKEY;
 const authentication = (req, res, next) => {
   try {
-      console.log(req.headers);
+    //   console.log(req.headers);
     if (!req.headers.authorization)
       return res.status(403).json({ message: "forbidden" });
 
@@ -11,7 +11,7 @@ const authentication = (req, res, next) => {
 
     const parsedToken = jwt.verify(token, secret);
     req.token = parsedToken;
-    console.log(token);
+    // console.log(token);
     next();
   } catch (error) {
     res.status(403).json(error);
