@@ -4,7 +4,7 @@ SignUp and Login With encrypt and gen Token
 
 ## ROLE SCHEMA
 
-```
+```js
 const mongoose = require("mongoose");
 const role = new mongoose.Schema({
   role: { type: String, required: true },
@@ -17,7 +17,7 @@ module.exports = mongoose.model("Role", role);
 
 ## USER SCHEMA
 
-```
+```js
 const mongoose = require("mongoose");
 
 const user = new mongoose.Schema({
@@ -38,7 +38,7 @@ module.exports = mongoose.model("User", user);
 
 ## Controllers:
 
-```
+```js
 const Register = async (req, res) => {
   const { email, password, role } = req.body;
   const lowerEmail = email.toLowerCase();
@@ -60,7 +60,7 @@ const Register = async (req, res) => {
 ```
 ## Routes:
 
-```
+```js
 userRouter.post("/signUp", Register);
 ```
 
@@ -69,7 +69,7 @@ userRouter.post("/signUp", Register);
 
 ## Controllers:
 
-```
+```js
 const login = (req, res) => {
   const { email, password } = req.body;
 
@@ -112,7 +112,17 @@ const login = (req, res) => {
 ```
 ## Routes:
 
-```
+```js
 userRouter.post("/login", login);
+
 ```
+
+# ER-Diagram:
+
+![This is an image](./ER-Diagram.png)
+
+
+# UML-Diagram:
+
+![This is an image](./Untitledd.png)
 
