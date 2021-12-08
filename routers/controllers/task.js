@@ -18,7 +18,7 @@ const createTask = (req, res) => {
 
 const getTasks = (req, res) => {
     taskModel
-      .find({ userId: req.token.id, deleted: false })
+      .find({ userId: req.token.id, isDelete: false })
       .then((result) => {
         if (result.length > 0) {
           res.status(200).json(result);
@@ -36,7 +36,7 @@ const getTasks = (req, res) => {
     const { id } = req.params;
   
     taskModel
-      .find({ userId: id, deleted: false })
+      .find({ userId: id, isDelete: false })
       .then((result) => {
         if (result.length > 0) {
           res.status(200).json(result);
